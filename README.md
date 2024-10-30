@@ -15,12 +15,6 @@ A command-line tool that helps streamline your LeetCode problem-solving workflow
 - Go 1.23 or higher
 - OpenAI API key
 
-## Installation
-
-```bash
-go install github.com/tomrplummer/lc-helper@latest
-```
-
 ## Configuration
 
 Set the following environment variables:
