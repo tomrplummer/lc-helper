@@ -20,7 +20,8 @@ func NewSetupMessage(description string, lang string, url string) []gpt.Message 
 			Role: "user",
 			Content: `
 			Provided: Description and code snippet.
-			We'll be joining everything into a single file, so the description should be a comment, followed by the code snippet followed by the provided use cases in the description.
+			We'll be joining everything into a single file, so the description should be a comment, followed by the code snippet, 
+			followed by the provided use cases in the description.
 			Don't return it as a code block because it breaks the source file.
 			The output should be json in the following format.
 			{
@@ -28,13 +29,12 @@ func NewSetupMessage(description string, lang string, url string) []gpt.Message 
 				"problem": //this is where you put the problem.  it will be written to a file, make sure it doesn't include anything that would break the code (like being a snippet).  also include the 'start code' for the given language,
 				"lang": //language name, lowercase
 			}
-			Make sure to convert the examples in to runnable use cases below the starter code.  They should be the exact examples found in the description.
-			Format the description (line breaks) to make it more readable, but still as a comment.
-			If a language requires additional code to be runnable (for example, package main in Go, or a main function in many languages, or potentially inside a module), add that as well.
-			The example use cases must also runnable by just running the file.  (in Go, they could be in the main function for example)
-			Use the url to get the starter code if needed.
-			DO NOT SOLVE THE LEETCODE PROBLEM.
+			Do not alter the code snippet, it must match what is returned from leetcode. Do not wrap it in a class just because you want to. You can add additional code for the examples (test cases), but the original code must be intact.
 			The name of the function in the starter code must not change from what was provided.  This will cause errors when submitting to leetcode
+			The examples provided must be converted to runnable code.  They should be the exact examples found in the description.
+			The example use cases must also runnable by just running the file.  (in Go, they could be in the main function for example)
+			Format the description (line breaks) to make it more readable, but still as a comment.
+			DO NOT SOLVE THE LEETCODE PROBLEM.
 			\ndescription: ` + description + `\nlang: ` + lang + `\nurl: `,
 		},
 	}
