@@ -66,6 +66,7 @@ func main() {
 	setupCmd.Flags().StringVar(&lang, "lang", "", "Language to use with file creation")
 
 	var level string
+	var responseStyle string
 
 	var hintCmd = &cobra.Command{
 		Use:   "hint <filename> --level <int>",
@@ -85,7 +86,7 @@ func main() {
 				return
 			}
 
-			messages := commands.NewHintMessage(string(source), level)
+			messages := commands.NewHintMessage(string(source), level, responseStyle)
 			request := gpt.NewRequest(messages)
 
 			resp, err := gpt.CallApi(apikey, *request)
@@ -108,6 +109,7 @@ func main() {
 	}
 
 	hintCmd.Flags().StringVar(&level, "level", "3", "Int, 1 through 5.  1 means a small hint, 5 means a big hint")
+	hintCmd.Flags().StringVar(&responseStyle, "response-style", "helpful", "Default is helpful, put anything you want for how you want the AI to respond")
 
 	rootCmd.AddCommand(setupCmd)
 	rootCmd.AddCommand(hintCmd)
