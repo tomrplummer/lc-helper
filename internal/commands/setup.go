@@ -53,7 +53,14 @@ func SaveSetupContent(response *gpt.Response) error {
 		return err
 	}
 
-	return os.WriteFile(path, []byte(setupData.Problem), 0777)
+	err = os.WriteFile(path, []byte(setupData.Problem), 0777)
+	if err != nil {
+		return fmt.Errorf("error creating file: %v", err)
+	}
+
+	fmt.Printf("Creating file: %v\n", path)
+
+	return nil
 }
 
 func createDirectory(filename string, lang string) (string, error) {
@@ -64,6 +71,8 @@ func createDirectory(filename string, lang string) (string, error) {
 	if err := os.MkdirAll(path, 0777); err != nil {
 		return "", fmt.Errorf("unable to create directory: %v", err)
 	}
+
+	fmt.Printf("Creating directory: %s\n", path)
 
 	fullPath := filepath.Join(path, filename)
 

@@ -19,8 +19,9 @@ func main() {
 
 	var rootCmd = &cobra.Command{
 		Use:   "lc-helper",
-		Short: "Generate leetcode starter file for given url",
+		Short: "Generate leetcode setup file and hints",
 		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println(cmd.Help())
 		},
 	}
 
@@ -32,19 +33,30 @@ func main() {
 		Long: `Creates file with use caes for given leetcode url.  
 			   Requires LEETCODE_PATH to be set in env to know where to create the file.
 			   `,
+		Args: cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
+			if len(args) == 0 {
+				fmt.Println(cmd.Help())
+				return
+			}
+
 			queryResult, err := lc.Query(args[0], lang)
 			if err != nil {
-				panic(err)
+				fmt.Println("unable to query leetcode: ", err)
+				return
 			}
 
 			messages := commands.NewSetupMessage(queryResult.Content, lang, "")
 			request := gpt.NewRequest(messages)
 
-			resp, _ := gpt.CallApi(apikey, *request)
+			resp, err := gpt.CallApi(apikey, *request)
+			if err != nil {
+				fmt.Println("error reaching openai api: ", err)
+				return
+			}
 
 			if err := commands.SaveSetupContent(resp); err != nil {
-				panic(err)
+				fmt.Println("error saving ai response: ", err)
 			}
 
 		},
@@ -57,18 +69,32 @@ func main() {
 	var hintCmd = &cobra.Command{
 		Use:   "hint <filename> --level <int>",
 		Short: "Get a hint on how to solve the problem.  --level 1 to 5 with 1 being a small hint and 5 being very, very helpful",
+		Args:  cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
+			if len(args) == 0 {
+				fmt.Println(cmd.Help())
+				return
+			}
+
 			filename := args[0]
 
 			source, err := os.ReadFile(filename)
 			if err != nil {
-				panic(err)
+				fmt.Println("unable to read source file: ", err)
+				return
 			}
 
 			messages := commands.NewHintMessage(string(source), level)
 			request := gpt.NewRequest(messages)
 
-			resp, _ := gpt.CallApi(apikey, *request)
+			resp, err := gpt.CallApi(apikey, *request)
+			if err != nil {
+				fmt.Println("error calling openai api: ", err)
+			}
+
+			if len(resp.Choices) == 0 {
+				fmt.Println("invalid response from openai")
+			}
 
 			hint := resp.Choices[0].Message.Content
 
