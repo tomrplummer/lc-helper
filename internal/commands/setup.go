@@ -19,23 +19,20 @@ func NewSetupMessage(description string, lang string, url string) []gpt.Message 
 		}, {
 			Role: "user",
 			Content: `
-			Provided: Description and code snippet.
-			We'll be joining everything into a single file, so the description should be a comment, followed by the code snippet, 
-			followed by the provided use cases in the description.
-			Don't return it as a code block because it breaks the source file.
-			The output should be json in the following format.
-			{
-				"filename": //use the function name followed by the correct extension,
-				"problem": //this is where you put the problem.  it will be written to a file, make sure it doesn't include anything that would break the code (like being a snippet).  also include the 'start code' for the given language,
-				"lang": //language name, lowercase
-			}
-			Do not alter the code snippet, it must match what is returned from leetcode. Do not wrap it in a class just because you want to. You can add additional code for the examples (test cases), but the original code must be intact.
-			The name of the function in the starter code must not change from what was provided.  This will cause errors when submitting to leetcode
-			The examples provided must be converted to runnable code.  They should be the exact examples found in the description.
-			The example use cases must also runnable by just running the file.  (in Go, they could be in the main function for example)
-			Format the description (line breaks) to make it more readable, but still as a comment.
-			DO NOT SOLVE THE LEETCODE PROBLEM.
-			\ndescription: ` + description + `\nlang: ` + lang + `\nurl: `,
+				Join the provided problem description, code snippet, and use cases into a single file. Format the output as JSON with three fields:
+
+				*	filename: Use the function name as the filename, followed by the appropriate extension for the language.
+				*	problem: Insert the problem description as a comment (with line breaks for readability), followed by the exact code snippet as provided, and finally, the example use cases as runnable code.
+				*	lang: Specify the language in lowercase.
+
+				Guidelines:
+
+				*	Do not alter the code snippet or function name; both must match the exact content from LeetCode, as modifying them could cause errors when submitting to LeetCode.
+				*	Convert the example use cases from the description into runnable code. Ensure that the file runs and executes these cases directly (e.g., in Go, place them in a main function).
+				*	Do not solve the problem; simply structure the file as described.
+				*	Do not use code snippets (wrapped in backticks), just plaintext responses, formatted appropriately
+				
+				\ndescription: ` + description + `\nlang: ` + lang + `\nurl: `,
 		},
 	}
 }

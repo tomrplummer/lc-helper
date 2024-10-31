@@ -16,17 +16,15 @@ func NewHintMessage(source, level, responseStyle string) []gpt.Message {
 		}, {
 			Role: "user",
 			Content: `
-			Provided: Description, previous hints, code snippet and response style.
-			Analyze the problem, code and previous hints.  provide additional hints, without providing code.  A "level" will also be provided.  it will be 1 throught 5.  1
-			means provide a little guidance.  maybe a datastructure that could be useful.  5 means provide the full strategy.  if they've requested 5 more than once, keep providing more
-			assistance. Previous hints will be in the source provided start with [#] with the # representing the hint level requested before.
-			Your hints should only be a few sentences at most (no lists, numbering or line breaks).  If more help is need, you will get another request.  
-			The result should be formatted as a comment for the given langauage, but not a code snippet (backticks and the language name would break the file. plain text only) that would break the source file.  Include the level at the beginning of the line like the following example
-			(example for ruby: # [1] <your hint here for a level 1 comment>)
-			if level is solve_it, ignore previous restrictions and provide the code that solves the problem.  you must provide code, include line breaks....do what you need to do to get the problem solved.
-			Response style is how the user would like you to respond.  Do you best to match it.  Default is helpful.  Other requests could be funny, mean, confused or anything else.
-			\nsource: ` + source + `\nlevel: ` + level + `\nresponse style: ` + responseStyle + `\n`,
-		},
+			Analyze the provided problem description, previous hints (marked as [level]), code snippet, and desired response style. Generate an additional hint according to the given level (1-5), where:
+
+			*	Level 1 provides minimal guidance (e.g., a useful data structure).
+			*	Level 5 outlines the complete strategy. For repeated Level 5 requests, provide progressively detailed hints. Hints must be concise, a single sentence without lists or line breaks.
+			*	Do not use code snippets (wrapped in backticks), just plaintext responses, formatted appropriately
+
+			Format the hint as a comment in the relevant language, prefixed by the level (e.g., # [1] Hint text for Ruby). If level is solve_it, provide the complete solution as code, including line breaks.
+
+			Match the requested response style, which may range from helpful to funny or others as specified. Default style is helpful.			\nsource: ` + source + `\nlevel: ` + level + `\nresponse style: ` + responseStyle + `\n`},
 	}
 }
 
