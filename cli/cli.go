@@ -14,7 +14,8 @@ func main() {
 	apikey := os.Getenv("LCHELPER_OPENAI_KEY")
 
 	if apikey == "" {
-		panic("no LCHELPER_OPENAI_KEY found in ENV")
+		fmt.Println("no LCHELPER_OPENAI_KEY found in ENV.  Create LCHELPER_OPENAI_KEY env variable.")
+		return
 	}
 
 	var rootCmd = &cobra.Command{
@@ -101,7 +102,7 @@ func main() {
 			fmt.Println(hint)
 
 			if err = commands.StoreHint(filename, hint); err != nil {
-				panic(err)
+				fmt.Printf("unable to save hint to source file: %v\n", err)
 			}
 		},
 	}

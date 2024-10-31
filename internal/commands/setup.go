@@ -66,6 +66,11 @@ func SaveSetupContent(response *gpt.Response) error {
 func createDirectory(filename string, lang string) (string, error) {
 	folderName := strings.Split(filename, ".")[0]
 
+	leetcode_path := os.Getenv("LEETCODE_PATH")
+	if leetcode_path == "" {
+		return "", fmt.Errorf("LEETCODE_PATH not found in ENV.  Create LEETCODE_PATH env variable")
+	}
+
 	path := filepath.Join(os.Getenv("LEETCODE_PATH"), lang, folderName)
 
 	if err := os.MkdirAll(path, 0777); err != nil {
