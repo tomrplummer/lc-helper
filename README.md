@@ -44,23 +44,33 @@ This will:
    - Starter code template
    - Example test cases
 
-### Get Hints
+   ### Get Hints
 
-```bash
-lc-helper hint <filename> --level <1-5>
-```
+   ```bash
+   lc-helper hint <filename> --level <1-5> [--response-style <style>]
+   ```
 
-Hint levels:
-- Level 1: Very subtle hint about approach
-- Level 2: General direction
-- Level 3: More specific strategy
-- Level 4: Detailed approach
-- Level 5: Comprehensive solution strategy
+   Hint levels:
+   - Level 1: Very subtle hint about approach
+   - Level 2: General direction
+   - Level 3: More specific strategy
+   - Level 4: Detailed approach
+   - Level 5: Comprehensive solution strategy
 
-Example:
-```bash
-lc-helper hint two-sum/solution.py --level 2
-```
+   Response styles:
+   - Default is "helpful"
+   - Can be customized to any style (e.g., funny, sarcastic, confused, encouraging)
+   - Affects how the AI presents its hints while maintaining the same level of assistance
+
+   Example:
+   ```bash
+   # Default helpful style
+   lc-helper hint two-sum/solution.py --level 2
+
+   # With custom response style
+   lc-helper hint two-sum/solution.py --level 2 --response-style funny
+   lc-helper hint two-sum/solution.py --level 3 --response-style sarcastic
+   ```
 
 ## Project Structure
 
